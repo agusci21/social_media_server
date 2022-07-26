@@ -14,9 +14,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAnUserById = exports.modifyAnUserById = exports.createAnUser = exports.getUserById = exports.getUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
-const getUsers = (req, res) => {
-    res.json({ msg: 'Aca funciona' });
-};
+const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield user_1.default.findAll();
+        return res.json(users);
+    }
+    catch (error) {
+        console.clear();
+        console.log(error);
+        return res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+});
 exports.getUsers = getUsers;
 const getUserById = (req, res) => { };
 exports.getUserById = getUserById;
@@ -31,9 +41,10 @@ const createAnUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
+        console.clear();
         console.log(error);
         return res.status(500).json({
-            msg: 'Problema interno del servidor'
+            msg: 'Problema interno del servidor',
         });
     }
 });
