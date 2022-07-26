@@ -28,7 +28,23 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUsers = getUsers;
-const getUserById = (req, res) => { };
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield user_1.default.findByPk(req.params.id);
+        if (!user)
+            return res.status(404).json({
+                msg: `El usuario con id ${req.params.id} no existe`
+            });
+        return res.json(user);
+    }
+    catch (error) {
+        console.clear();
+        console.log(error);
+        return res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+});
 exports.getUserById = getUserById;
 const createAnUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
