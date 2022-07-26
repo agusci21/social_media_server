@@ -1,4 +1,5 @@
 import { application, Router } from 'express'
+import { check } from 'express-validator'
 import {
   getUsers,
   getUserById,
@@ -10,7 +11,9 @@ const router = Router()
 
 router.get('/', getUsers)
 router.get('/:id', getUserById)
-router.post('/create', createAnUser)
+router.post('/create',[
+  check('email', 'El correo no es valido').isEmail(),
+],createAnUser)
 router.put('/:id', modifyAnUserById)
 router.delete('/:id', deleteAnUserById)
 
