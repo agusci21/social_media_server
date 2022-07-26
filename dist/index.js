@@ -8,3 +8,4 @@ dotenv_1.default.config();
 const server_1 = __importDefault(require("./models/server"));
 const server = new server_1.default();
 server.listen();
+//TODO crear los middlewares

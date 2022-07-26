@@ -44,8 +44,6 @@ class Server {
         // Lectura del body
         this.app.use( express.json() );
 
-        // Carpeta pública
-        this.app.use( express.static('public') );
     }
 
 

@@ -44,8 +44,6 @@ class Server {
         this.app.use((0, cors_1.default)());
         // Lectura del body
         this.app.use(express_1.default.json());
-        // Carpeta pública
-        this.app.use(express_1.default.static('public'));
     }
     routes() {
         this.app.use(this.apiPaths.users, user_1.default);

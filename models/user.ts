@@ -1,17 +1,33 @@
-import { DataTypes } from 'sequelize'
+import { Sequelize, Model, DataTypes } from 'sequelize'
 import db from '../db/connection'
 
-const User = db.define('User', {
-  
-  name: {
-    type: DataTypes.STRING,
+class User extends Model {
+  declare id: string
+  declare name: string
+  declare email: string
+  declare password: string
+}
+
+User.init(
+  {
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    password: {
+      type: DataTypes.STRING,
+    },
   },
-  email: {
-    type: DataTypes.STRING,
+  {
+    tableName: 'users',
+    sequelize: db,
   },
-  password: {
-    type: DataTypes.STRING,
-  },
-})
+)
 
 export default User
