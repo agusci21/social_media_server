@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import User from '../models/user'
 import bcryptjs from 'bcryptjs'
 import { validationResult } from 'express-validator'
+import { validateFields } from '../middlewares/validate_fields'
+import { checkIfEmailExists } from '../helpers/check_if_email_exists'
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -32,8 +34,10 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 }
 export const createAnUser = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if(!errors.isEmpty()) return res.status(400).json(errors)
+  const existEmail = await checkIfEmailExists(req.body.email)
+  if(existEmail) return res.status(400).json({
+    msg: `El email ${req.body.email} ya esta en uso`
+  })
   try {
     const user = User.build(req.body)
     const salt = bcryptjs.genSaltSync()

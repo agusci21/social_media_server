@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAnUserById = exports.modifyAnUserById = exports.createAnUser = exports.getUserById = exports.getUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const express_validator_1 = require("express-validator");
+const check_if_email_exists_1 = require("../helpers/check_if_email_exists");
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield user_1.default.findAll();
@@ -49,9 +49,11 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getUserById = getUserById;
 const createAnUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty())
-        return res.status(400).json(errors);
+    const existEmail = yield (0, check_if_email_exists_1.checkIfEmailExists)(req.body.email);
+    if (existEmail)
+        return res.status(400).json({
+            msg: `El email ${req.body.email} ya esta en uso`
+        });
     try {
         const user = user_1.default.build(req.body);
         const salt = bcryptjs_1.default.genSaltSync();
