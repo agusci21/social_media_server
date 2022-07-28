@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { login } from '../controllers/auth'
+import { login, validateJWT } from '../controllers/auth'
 const router = Router()
-//api/auth
+// api/auth
 router.post('/login', login)
+router.get('/:token', validateJWT)
 
 export default router

@@ -12,27 +12,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = void 0;
+exports.validateJWT = exports.login = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user_1 = __importDefault(require("../models/user"));
 const generate_jwt_1 = require("../helpers/generate_jwt");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield user_1.default.findOne({
-        where: { email }
+        where: { email },
     });
     if (!user)
         return res.status(404).json({
-            msg: `El correo ${email} no existe`
+            msg: `El correo ${email} no existe`,
         });
     if (!bcryptjs_1.default.compareSync(password, user.password))
         return res.status(400).json({
-            msg: 'La contraseña es incorrecta'
+            msg: 'La contraseña es incorrecta',
         });
     const token = yield (0, generate_jwt_1.generateJWT)(user.id);
     return res.json({
         user,
-        token
+        token,
     });
 });
 exports.login = login;
+const validateJWT = (req, res) => {
+    var _a;
+    try {
+        const { token } = req.params;
+        const secretKey = (_a = process.env.SECRETORPRIVATEKEY) !== null && _a !== void 0 ? _a : '';
+        const isValidToken = jsonwebtoken_1.default.verify(token, secretKey);
+        isValidToken
+            ? res.status(200).json({
+                valid: true,
+            })
+            : res.status(400).json({
+                valid: false,
+                msg: 'Token expirado',
+            });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).json({
+            msg: 'Formato incorrecto',
+        });
+    }
+};
+exports.validateJWT = validateJWT;

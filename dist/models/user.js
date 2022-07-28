@@ -15,6 +15,9 @@ User.init({
     name: {
         type: sequelize_1.DataTypes.STRING,
     },
+    alias: {
+        type: sequelize_1.DataTypes.STRING,
+    },
     email: {
         type: sequelize_1.DataTypes.STRING,
     },

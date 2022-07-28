@@ -17,6 +17,9 @@ User.init(
     name: {
       type: DataTypes.STRING,
     },
+    alias: {
+      type: DataTypes.STRING,
+    },
     email: {
       type: DataTypes.STRING,
     },
