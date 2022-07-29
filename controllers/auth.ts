@@ -5,6 +5,8 @@ import User from '../models/user'
 import { generateJWT } from '../helpers/generate_jwt'
 import jwt from 'jsonwebtoken'
 
+type JWTPayload = { uid: number; iat: number; exp: number }
+
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
   const user = await User.findOne({
@@ -27,19 +29,20 @@ export const login = async (req: Request, res: Response) => {
   })
 }
 
-export const validateJWT = (req: Request, res: Response) => {
+export const validateJWT = async (req: Request, res: Response) => {
   try {
     const { token } = req.params
     const secretKey = process.env.SECRETORPRIVATEKEY ?? ''
     const isValidToken = jwt.verify(token, secretKey)
-    isValidToken
-      ? res.status(200).json({
-          valid: true,
-        })
-      : res.status(400).json({
-          valid: false,
-          msg: 'Token expirado',
-        })
+    if (!isValidToken)
+      return res.status(400).json({
+        valid: false,
+        msg: 'Token expirado',
+      })
+    const payload: JWTPayload = jwt.decode(token) as JWTPayload
+
+    const user = await User.findByPk(payload.uid)
+    return res.status(200).json(user)
   } catch (error) {
     console.log(error)
     res.status(400).json({

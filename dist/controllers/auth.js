@@ -37,20 +37,20 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.login = login;
-const validateJWT = (req, res) => {
+const validateJWT = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const { token } = req.params;
         const secretKey = (_a = process.env.SECRETORPRIVATEKEY) !== null && _a !== void 0 ? _a : '';
         const isValidToken = jsonwebtoken_1.default.verify(token, secretKey);
-        isValidToken
-            ? res.status(200).json({
-                valid: true,
-            })
-            : res.status(400).json({
+        if (!isValidToken)
+            return res.status(400).json({
                 valid: false,
                 msg: 'Token expirado',
             });
+        const payload = jsonwebtoken_1.default.decode(token);
+        const user = yield user_1.default.findByPk(payload.uid);
+        return res.status(200).json(user);
     }
     catch (error) {
         console.log(error);
@@ -58,5 +58,5 @@ const validateJWT = (req, res) => {
             msg: 'Formato incorrecto',
         });
     }
-};
+});
 exports.validateJWT = validateJWT;
