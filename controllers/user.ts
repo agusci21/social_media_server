@@ -32,7 +32,6 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 }
 export const createAnUser = async (req: Request, res: Response) => {
-  console.log('LLega aca')
   console.log(req.body)
   const existEmail = await checkIfEmailExists(req.body.email)
   if (existEmail)

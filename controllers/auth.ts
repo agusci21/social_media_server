@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { checkIfEmailExists } from '../helpers/check_if_email_exists'
 import bcryptjs from 'bcryptjs'
 import User from '../models/user'
 import { generateJWT } from '../helpers/generate_jwt'

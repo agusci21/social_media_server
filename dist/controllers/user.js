@@ -47,7 +47,6 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getUserById = getUserById;
 const createAnUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('LLega aca');
     console.log(req.body);
     const existEmail = yield (0, check_if_email_exists_1.checkIfEmailExists)(req.body.email);
     if (existEmail)
