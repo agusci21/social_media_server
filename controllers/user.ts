@@ -58,5 +58,21 @@ export const createAnUser = async (req: Request, res: Response) => {
     })
   }
 }
-export const modifyAnUserById = (req: Request, res: Response) => {}
+export const modifyAnUserById = async (req: Request, res: Response) => {
+  const {body} = req
+  const{email, id, alias} = body
+  const oldUser = await User.findByPk(id)
+  if(!oldUser) return res.status(404).json({
+    msg: 'Usuario no encontrado'
+  })
+  const existEmail = await checkIfEmailExists(email)
+  if(existEmail && email != oldUser.email) return res.status(400).json({
+    msg: `El email: ${email} ya esta en uso`
+  })
+  oldUser.update(body)
+  return res.json({
+    old: oldUser,
+    new: body
+  })
+}
 export const deleteAnUserById = (req: Request, res: Response) => {}

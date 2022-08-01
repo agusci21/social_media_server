@@ -75,7 +75,25 @@ const createAnUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.createAnUser = createAnUser;
-const modifyAnUserById = (req, res) => { };
+const modifyAnUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    const { email, id, alias } = body;
+    const oldUser = yield user_1.default.findByPk(id);
+    if (!oldUser)
+        return res.status(404).json({
+            msg: 'Usuario no encontrado'
+        });
+    const existEmail = yield (0, check_if_email_exists_1.checkIfEmailExists)(email);
+    if (existEmail && email != oldUser.email)
+        return res.status(400).json({
+            msg: `El email: ${email} ya esta en uso`
+        });
+    oldUser.update(body);
+    return res.json({
+        old: oldUser,
+        new: body
+    });
+});
 exports.modifyAnUserById = modifyAnUserById;
 const deleteAnUserById = (req, res) => { };
 exports.deleteAnUserById = deleteAnUserById;

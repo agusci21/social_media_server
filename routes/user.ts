@@ -18,7 +18,7 @@ router.post('/create',[
   check('email', 'El correo no es valido').isEmail(),
   validateFields
 ],createAnUser)
-router.put('/:id', modifyAnUserById)
+router.put('/modify', modifyAnUserById)
 router.delete('/:id', deleteAnUserById)
 
 export default router

@@ -13,6 +13,6 @@ router.post('/create', [
     (0, express_validator_1.check)('email', 'El correo no es valido').isEmail(),
     validate_fields_1.validateFields
 ], user_1.createAnUser);
-router.put('/:id', user_1.modifyAnUserById);
+router.put('/modify', user_1.modifyAnUserById);
 router.delete('/:id', user_1.deleteAnUserById);
 exports.default = router;
