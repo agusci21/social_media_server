@@ -40,7 +40,11 @@ export const validateJWT = async (req: Request, res: Response) => {
       })
     const payload: JWTPayload = jwt.decode(token) as JWTPayload
 
-    const user = await User.findByPk(payload.uid)
+    const rawUser = await User.findByPk(payload.uid)
+    if(!rawUser) return res.status(404).json({
+      msg: 'Usuario No encontrado'
+    })
+    const {password ,...user} = rawUser
     return res.status(200).json(user)
   } catch (error) {
     console.log(error)

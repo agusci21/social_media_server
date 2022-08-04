@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -77,21 +88,24 @@ const createAnUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.createAnUser = createAnUser;
 const modifyAnUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    const { email, id, alias } = body;
+    const { password, id } = body, rest = __rest(body, ["password", "id"]);
+    console.log(rest);
+    const { email, alias } = rest;
     const oldUser = yield user_1.default.findByPk(id);
     if (!oldUser)
         return res.status(404).json({
-            msg: 'Usuario no encontrado'
+            msg: 'Usuario no encontrado',
         });
     const existEmail = yield (0, check_if_email_exists_1.checkIfEmailExists)(email);
     if (existEmail && email != oldUser.email)
         return res.status(400).json({
-            msg: `El email: ${email} ya esta en uso`
+            msg: `El email: ${email} ya esta en uso`,
         });
     oldUser.update(body);
+    const newUser = yield user_1.default.findByPk(id);
     return res.json({
-        old: oldUser,
-        new: body
+        old: newUser,
+        new: oldUser,
     });
 });
 exports.modifyAnUserById = modifyAnUserById;

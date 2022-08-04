@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 import User from '../models/user'
 import bcryptjs from 'bcryptjs'
-import { validationResult } from 'express-validator'
-import { validateFields } from '../middlewares/validate_fields'
 import { checkIfEmailExists } from '../helpers/check_if_email_exists'
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -59,20 +57,25 @@ export const createAnUser = async (req: Request, res: Response) => {
   }
 }
 export const modifyAnUserById = async (req: Request, res: Response) => {
-  const {body} = req
-  const{email, id, alias} = body
+  const { body } = req
+  const { password, id, ...rest } = body
+  console.log(rest)
+  const { email, alias } = rest
   const oldUser = await User.findByPk(id)
-  if(!oldUser) return res.status(404).json({
-    msg: 'Usuario no encontrado'
-  })
+  if (!oldUser)
+    return res.status(404).json({
+      msg: 'Usuario no encontrado',
+    })
   const existEmail = await checkIfEmailExists(email)
-  if(existEmail && email != oldUser.email) return res.status(400).json({
-    msg: `El email: ${email} ya esta en uso`
-  })
+  if (existEmail && email != oldUser.email)
+    return res.status(400).json({
+      msg: `El email: ${email} ya esta en uso`,
+    })
   oldUser.update(body)
+  const newUser = await User.findByPk(id)
   return res.json({
-    old: oldUser,
-    new: body
+    old: newUser,
+    new: oldUser,
   })
 }
 export const deleteAnUserById = (req: Request, res: Response) => {}

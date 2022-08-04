@@ -6,4 +6,3 @@ console.clear()
 const server = new Server()
 server.listen()
 
-//TODO crear los middlewares
