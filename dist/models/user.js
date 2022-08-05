@@ -9,7 +9,7 @@ class User extends sequelize_1.Model {
 }
 User.init({
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.BIGINT,
         primaryKey: true,
     },
     name: {

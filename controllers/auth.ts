@@ -44,7 +44,8 @@ export const validateJWT = async (req: Request, res: Response) => {
     if(!rawUser) return res.status(404).json({
       msg: 'Usuario No encontrado'
     })
-    const {password ,...user} = rawUser
+    const {dataValues} : any = rawUser
+    const {password, ...user} = dataValues
     return res.status(200).json(user)
   } catch (error) {
     console.log(error)

@@ -65,7 +65,8 @@ const validateJWT = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return res.status(404).json({
                 msg: 'Usuario No encontrado'
             });
-        const { password } = rawUser, user = __rest(rawUser, ["password"]);
+        const { dataValues } = rawUser;
+        const { password } = dataValues, user = __rest(dataValues, ["password"]);
         return res.status(200).json(user);
     }
     catch (error) {
