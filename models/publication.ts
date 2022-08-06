@@ -1,7 +1,7 @@
-import { DataTypes, Model } from "sequelize/types";
-import db from "../db/connection";
+import { Sequelize, Model, DataTypes } from 'sequelize'
+import db from '../db/connection'
 
-class Publication extends Model{
+class Publication extends Model {
     declare id: number
     declare ownerId: number
     declare photoUrl: string
@@ -9,35 +9,36 @@ class Publication extends Model{
     declare coments: string[]
 }
 
-Publication.init({
-
+Publication.init(
+  {
     id: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        unique: true
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      unique: true,
+      allowNull: false,
+      autoIncrement: true
     },
     ownerId: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
+        type:DataTypes.BIGINT,
     },
     photoUrl: {
         type: DataTypes.STRING,
-        allowNull: false,
+        unique: true
     },
     amountOfLikes: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
+        defaultValue: 0
     },
     coments: {
-        type: DataTypes.ARRAY,
-        allowNull: true,
+        type: DataTypes.JSON
     }
-
-
-},{
+    
+  },
+  {
     tableName: 'publications',
-    sequelize: db
-})
+    sequelize: db,
+    timestamps: false
+  },
+)
+
+export default Publication

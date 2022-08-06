@@ -3,36 +3,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = require("sequelize/types");
+const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
-class Publication extends types_1.Model {
+class Publication extends sequelize_1.Model {
 }
 Publication.init({
     id: {
-        type: types_1.DataTypes.BIGINT,
-        allowNull: false,
-        autoIncrement: true,
+        type: sequelize_1.DataTypes.BIGINT,
         primaryKey: true,
-        unique: true
+        unique: true,
+        allowNull: false,
+        autoIncrement: true
     },
     ownerId: {
-        type: types_1.DataTypes.BIGINT,
-        allowNull: false,
+        type: sequelize_1.DataTypes.BIGINT,
     },
     photoUrl: {
-        type: types_1.DataTypes.STRING,
-        allowNull: false,
+        type: sequelize_1.DataTypes.STRING,
+        unique: true
     },
     amountOfLikes: {
-        type: types_1.DataTypes.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
+        type: sequelize_1.DataTypes.INTEGER,
+        defaultValue: 0
     },
     coments: {
-        type: types_1.DataTypes.ARRAY,
-        allowNull: true,
+        type: sequelize_1.DataTypes.JSON
     }
 }, {
     tableName: 'publications',
-    sequelize: connection_1.default
+    sequelize: connection_1.default,
+    timestamps: false
 });
+exports.default = Publication;
