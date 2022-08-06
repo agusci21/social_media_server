@@ -12,20 +12,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createAPublication = void 0;
+exports.getAllPublications = exports.createAPublication = void 0;
 const publication_1 = __importDefault(require("../models/publication"));
 const createAPublication = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const publication = publication_1.default.build(req.body);
         yield publication.save();
         return res.json({
-            msg: 'Publicacion guardada'
+            msg: 'Publicacion guardada',
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(500).json({
-            msg: 'Ocurrio un error en el servidor'
+            msg: 'Ocurrio un error en el servidor',
         });
     }
 });
 exports.createAPublication = createAPublication;
+const getAllPublications = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const limit = Number.parseInt(((_a = req.query.limit) !== null && _a !== void 0 ? _a : '20'));
+    try {
+        const publications = yield publication_1.default.findAll({
+            limit,
+            order: [['createdAt', 'DESC']]
+        });
+        return res.json({
+            publications,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'Ocurrio un error en el servidor',
+        });
+    }
+});
+exports.getAllPublications = getAllPublications;

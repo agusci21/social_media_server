@@ -37,7 +37,7 @@ Publication.init(
   {
     tableName: 'publications',
     sequelize: db,
-    timestamps: false
+    timestamps: true
   },
 )
 

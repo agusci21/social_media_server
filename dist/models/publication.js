@@ -32,6 +32,6 @@ Publication.init({
 }, {
     tableName: 'publications',
     sequelize: connection_1.default,
-    timestamps: false
+    timestamps: true
 });
 exports.default = Publication;

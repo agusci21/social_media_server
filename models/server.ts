@@ -14,7 +14,7 @@ class Server {
     private apiPaths = {
         users: '/api/users',
         auth: '/api/auth',
-        publication: '/api/publicate',
+        publication: '/api/publications',
     }
 
     constructor() {

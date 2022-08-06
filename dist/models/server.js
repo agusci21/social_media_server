@@ -23,7 +23,7 @@ class Server {
         this.apiPaths = {
             users: '/api/users',
             auth: '/api/auth',
-            publication: '/api/publicate',
+            publication: '/api/publications',
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
