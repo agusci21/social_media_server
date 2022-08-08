@@ -4,6 +4,7 @@ import db from '../db/connection'
 class User extends Model {
   declare id: number
   declare name: string
+  declare alias: string
   declare email: string
   declare password: string
 }

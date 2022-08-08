@@ -53,8 +53,7 @@ const getAllPublications = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const owners = yield getListOfUserByPublications(rawPublications.map(e => e.ownerId));
         let publications = [];
         for (let i = 0; i < limit; i++) {
-            const copyPublications = rawPublications;
-            let _b = copyPublications[i]['dataValues'], { ownerId } = _b, publication = __rest(_b, ["ownerId"]);
+            let _b = rawPublications[i].toJSON(), { ownerId } = _b, publication = __rest(_b, ["ownerId"]);
             publication.owner = owners[i];
             publications[i] = publication;
         }

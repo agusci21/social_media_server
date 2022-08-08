@@ -29,8 +29,7 @@ export const getAllPublications = async (req: Request, res: Response) => {
     let publications : any[] = []
 
     for(let i = 0; i < limit; i++){
-      const copyPublications: any[] = rawPublications
-      let {ownerId, ...publication} : any = copyPublications[i]['dataValues']
+      let {ownerId, ...publication} : any = rawPublications[i].toJSON()
       publication.owner = owners[i]
       publications[i] = publication
     }
