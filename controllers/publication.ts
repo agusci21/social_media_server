@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import Publication from '../models/publication'
+import User from '../models/user';
 
 export const createAPublication = async (req: Request, res: Response) => {
   try {
@@ -19,10 +20,20 @@ export const createAPublication = async (req: Request, res: Response) => {
 export const getAllPublications = async (req: Request, res: Response) => {
   const limit = Number.parseInt((req.query.limit ?? '20') as string)
   try {
-    const publications = await Publication.findAll({
+    const rawPublications = await Publication.findAll({
         limit,
         order: [['createdAt', 'DESC']]
     })
+
+    const owners = await getListOfUserByPublications(rawPublications.map(e => e.ownerId))
+    let publications : any[] = []
+
+    for(let i = 0; i < limit; i++){
+      const copyPublications: any[] = rawPublications
+      let {ownerId, ...publication} : any = copyPublications[i]['dataValues']
+      publication.owner = owners[i]
+      publications[i] = publication
+    }
 
     return res.json({
       publications,
@@ -33,4 +44,15 @@ export const getAllPublications = async (req: Request, res: Response) => {
       msg: 'Ocurrio un error en el servidor',
     })
   }
+}
+
+const getListOfUserByPublications = async (listOfOwnersId : number[]) : Promise<User[]> => {
+  let users : any[] = []
+  console.log(listOfOwnersId.length)
+  for(let i = 0; i < listOfOwnersId.length; i++){
+    const user : any = await User.findByPk(listOfOwnersId[i])
+    users[i] = user['dataValues']
+  }
+  console.table(users)
+  return users
 }
